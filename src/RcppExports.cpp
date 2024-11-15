@@ -10,6 +10,18 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// PredictY
+NumericVector PredictY(NumericMatrix x, NumericVector beta_hat);
+RcppExport SEXP _mathcalculate_PredictY(SEXP xSEXP, SEXP beta_hatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type beta_hat(beta_hatSEXP);
+    rcpp_result_gen = Rcpp::wrap(PredictY(x, beta_hat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_hello
 List rcpp_hello();
 RcppExport SEXP _mathcalculate_rcpp_hello() {
@@ -22,6 +34,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_mathcalculate_PredictY", (DL_FUNC) &_mathcalculate_PredictY, 2},
     {"_mathcalculate_rcpp_hello", (DL_FUNC) &_mathcalculate_rcpp_hello, 0},
     {NULL, NULL, 0}
 };

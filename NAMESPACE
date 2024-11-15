@@ -1,4 +1,5 @@
 exportPattern("^[[:alpha:]]+")
+export(PredictY)
 importFrom(Rcpp, evalCpp)
-importFrom("stats", "model.matrix", "pt")
+importFrom("stats", "model.matrix", "pt","setNames")
 useDynLib(mathcalculate, .registration = TRUE)
