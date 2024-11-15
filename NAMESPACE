@@ -1,3 +1,4 @@
 exportPattern("^[[:alpha:]]+")
 importFrom(Rcpp, evalCpp)
+importFrom("stats", "model.matrix", "pt")
 useDynLib(mathcalculate, .registration = TRUE)
