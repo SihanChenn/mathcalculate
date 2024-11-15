@@ -20,7 +20,3 @@ PredictY <- function(x, beta_hat) {
     .Call(`_mathcalculate_PredictY`, x, beta_hat)
 }
 
-rcpp_hello <- function() {
-    .Call(`_mathcalculate_rcpp_hello`)
-}
-
