@@ -23,6 +23,7 @@ linear_regress=function(y,x){
   n = nrow(X)
   p = ncol(X)
 
+
   #### Estimation: betahat and var(betahat) ####
   betahat = solve(t(X)%*%X)%*%t(X)%*%Y
   Yhat = X%*%betahat
