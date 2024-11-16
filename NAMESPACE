@@ -1,5 +1,7 @@
 exportPattern("^[[:alpha:]]+")
+export(linear_regress)
 export(PredictY)
 importFrom(Rcpp, evalCpp)
-importFrom("stats", "model.matrix", "pt","setNames")
+importFrom("bench","mark")
+importFrom("stats", "model.matrix", "pt","setNames","na.omit")
 useDynLib(mathcalculate, .registration = TRUE)

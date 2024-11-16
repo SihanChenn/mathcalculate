@@ -7,19 +7,29 @@
 linear_regress(y, x)
 }
 \arguments{
-\item{x, y}{input value}
+\item{y}{A numeric vector representing the dependent variable (without any NA values).}
+
+\item{x}{A numeric matrix or data frame representing the covariates (without any NA values).}
 }
 \value{
-regression result
+Linear_regress returns a list of linear regression result using least squared method, containing the following components:
+\item{Estimate}{Estimated coefficients for the model.}
+\item{Std_Err}{Standard error for estimated coefficients.}
+\item{t_statistic}{T statistics for estimated coefficients.}
+\item{p_value}{P-value for t statistics of estimated coefficients.}
 }
 \description{
-compute linear regression models using least square method, and get a result which includes estimated coefficients,standard error of estimated coefficients, t statistics and p-value..
+Compute linear regression models using least square method, and get a result which includes estimated coefficients, standard error of estimated coefficients, t statistics and p-value.
 }
 \examples{
-library(MASS)  # make sure MASS is loaded
+require(MASS)
 data(Boston)
 y=Boston$medv
-x <- as.matrix(Boston[, -which(names(Boston) == "medv")])
+x=as.matrix(Boston[, -which(names(Boston) == "medv")])
+linear_regress(y,x)
+
+x=c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
+y= c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
 linear_regress(y,x)
 
 }

@@ -7,17 +7,26 @@
 PredictY(x, beta_hat)
 }
 \arguments{
-\item{x, beta_hat}{input value}
+\item{x}{A numeric matrix or data frame representing the covariates (without any NA values).}
+
+\item{beta_hat}{A numeric vector of estimated regression coefficients.}
 }
 \value{
-y_hat
+PredictY produces a vector of predictions.
 }
 \description{
-Gets predict y for a linear regression
+Gets predicted values for a linear regression.
 }
 \examples{
-mat <- matrix(c(1, 2, 3, 4, 5, 6,7,8,9), nrow = 3);
-beta = c(1.1, 2.2, 3.3);
-y_hat=PredictY(mat,beta);
+mat=matrix(c(1, 2, 3, 4, 5, 6,7,8,9), nrow = 3,byrow=TRUE);
+beta = c(1.1, 2.2, 3.3,4.4);
+PredictY(mat,beta);
+
+require(MASS)
+data(Boston)
+y=Boston$medv
+x=as.matrix(Boston[, -which(names(Boston) == "medv")])
+lm1=linear_regress(y,x)
+PredictY(x,lm1[["Estimate"]])
 
 }
