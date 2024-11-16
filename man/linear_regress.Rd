@@ -22,6 +22,9 @@ Linear_regress returns a list of linear regression result using least squared me
 Compute linear regression models using least square method, and get a result which includes estimated coefficients, standard error of estimated coefficients, t statistics and p-value.
 }
 \examples{
+#Using Boston dataset
+#medv is dependent variable
+#other variables in Boston are independent variables
 require(MASS)
 data(Boston)
 y=Boston$medv
@@ -29,7 +32,23 @@ x=as.matrix(Boston[, -which(names(Boston) == "medv")])
 linear_regress(y,x)
 
 x=c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
-y= c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
+y=c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
 linear_regress(y,x)
 
+#Using mtcars dataset
+#mpg is dependent variable
+#other variables in mtcars are independent variables
+data("mtcars")
+y=mtcars$mpg
+x=as.matrix(mtcars[, -which(names(mtcars) == "mpg")])
+linear_regress(y,x)
+
+#Using airquality dataset, and omit NA values
+#Ozone is dependent variable
+#Temp, Wind, Solar.R, Month are independent variables
+data(airquality)
+airquality_clean <- na.omit(airquality)
+y=airquality_clean$Ozone
+x=cbind(airquality_clean$Temp,airquality_clean$Wind,airquality_clean$Solar.R,airquality_clean$Month)
+linear_regress(y,x)
 }

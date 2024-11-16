@@ -24,38 +24,55 @@ Use the Boston dataset (Housing Values in Suburbs of Boston) from the MASS packa
 library(MASS)
 library(knitr)
 data(Boston)
-y=Boston$medv
-x=as.matrix(Boston[, -which(names(Boston) == "medv")])
-lm1=linear_regress(y,x)
-y_hat=PredictY(x,lm1[["Estimate"]])
+y = Boston$medv
+x = as.matrix(Boston[, -which(names(Boston) == "medv")])
+lm1 = linear_regress(y, x)
+y_hat = PredictY(x, lm1[["Estimate"]])
 print(lm1)
+print(y_hat)
 ```
 Using original R function lm to demonstrate both correctness and the efficiency.
 ```{r}
-lm_fit=lm(y~x)
-summary_fit=summary(lm_fit)
+lm_fit = lm(y ~ x)
+summary_fit = summary(lm_fit)
 ```
 
 Test correctness of estimated coefficients, standard errors, t-statistics, p-value.
 ```{r}
 all.equal(lm1[["Estimate"]], coef(lm_fit), tolerance = 1e-5)
 all.equal(lm1[["Std_Err"]], summary_fit$coefficients[, "Std. Error"], tolerance = 1e-5)
-all.equal(lm1[["t_statistic"]],summary_fit$coefficients[, "t value"], tolerance = 1e-5)
+all.equal(lm1[["t_statistic"]], summary_fit$coefficients[, "t value"], tolerance = 1e-5)
 all.equal(lm1[["p_value"]], summary_fit$coefficients[, "Pr(>|t|)"], tolerance = 1e-5)
 all.equal(y_hat, predict(lm_fit), tolerance = 1e-5)
 ```
 Test efficiency.
 ```{r}
 benchmark_results <- bench::mark(
+  # mathcalclate linear_regress
   mathcalclate = {
     lm1 <- linear_regress(y, x)
     y_hat <- PredictY(x, lm1[["Estimate"]])
-    list(Estimate = lm1[["Estimate"]],Std_Err = lm1[["Std_Err"]],t_statistic =lm1[["t_statistic"]], p_value = lm1[["p_value"]],y_hat = y_hat)},
+    list(
+      Estimate = lm1[["Estimate"]],
+      Std_Err = lm1[["Std_Err"]],
+      t_statistic = lm1[["t_statistic"]],
+      p_value = lm1[["p_value"]],
+      y_hat = y_hat
+    )
+  },
   # Base R linear regression
   base = {
     lm_fit <- lm(y ~ x)
     summary_fit <- summary(lm_fit)
-    list(Estimate = coef(lm_fit),Std_Err = summary_fit$coefficients[, "Std. Error"],t_statistic = summary_fit$coefficients[, "t value"],p_value = summary_fit$coefficients[, "Pr(>|t|)"],y_hat = predict(lm_fit))},
+    list(
+      Estimate = coef(lm_fit),
+      Std_Err = summary_fit$coefficients[, "Std. Error"],
+      t_statistic = summary_fit$coefficients[, "t value"],
+      p_value = summary_fit$coefficients[, "Pr(>|t|)"],
+      y_hat = predict(lm_fit)
+    )
+  },
+  # check correction
   check = function(mathcalclate, base) {
     is_equal <- all(
       all.equal(mathcalclate[["Estimate"]], base[["Estimate"]], tolerance = 1e-5),
@@ -64,7 +81,8 @@ benchmark_results <- bench::mark(
       all.equal(mathcalclate[["p_value"]], base[["p_value"]], tolerance = 1e-5),
       all.equal(mathcalclate[["y_hat"]], base[["y_hat"]], tolerance = 1e-5)
     )
-    if (!is_equal) stop("Results do not match.")
+    if (!is_equal)
+      stop("Results do not match.")
     is_equal
   }
 )
