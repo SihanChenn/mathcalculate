@@ -21,7 +21,11 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/SihanChenn/mathcalculate/branch/main/graph/badge.svg)](https://app.codecov.io/gh/SihanChenn/mathcalculate?branch=main)
 <!-- badges: end -->
 
-The goal of mathcalculate is to ...
+The goal of mathcalculate is to compute linear regression models using least square method, and get a result about estimated coefficients (including estimated coefficients, standard error of estimated coefficients, t statistics and p-value) and estimated Y. Be careful that to run this package, both X and Y should not have any NA values.
+
+This package contains two functions. "linear_regress" is to compute linear regression models and get estimated coefficients. "PredictedY" is to get predicted values for a linear regression. 
+
+Please see help page in R package for more detailed information about these two functions.
 
 ## Installation
 
@@ -34,25 +38,30 @@ devtools::install_github("SihanChenn/mathcalculate")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to use this package:
 
 ```{r example}
 library(mathcalculate)
-## basic example code
+#basic example code
+data("mtcars")
+#set up x and y
+y = mtcars$mpg
+x = as.matrix(mtcars[, -which(names(mtcars) == "mpg")])
+#get linear regression results using linear_regress
+result = linear_regress(y, x)
+#get predicted values from PredictY
+y_hat = PredictY(x, result[["Estimate"]])
+# results
+print(result)
+print(y_hat)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
+Scatter plot for predicted y v.s. actual y.
 
 ```{r pressure, echo = FALSE}
-plot(pressure)
+plot(y_hat, y, main = "Predicted vs Actual Values", 
+     xlab = "Predicted Values", ylab = "Actual Values", 
+     pch = 16, col = "black")  # pch=16 creates filled circles, col=blue sets color
+abline(0, 1, col = "red", lwd = 2)
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
